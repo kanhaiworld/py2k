@@ -1,0 +1,6 @@
+# Dev/test dependencies for py2k.
+# Mirrors [project.optional-dependencies].dev and .dataframe in pyproject.toml.
+-r requirements.txt
+pytest==9.1.1
+responses==0.26.2
+pandas==3.0.3
