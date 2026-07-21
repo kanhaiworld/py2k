@@ -1,0 +1,4 @@
+# Runtime dependencies for py2k.
+# Mirrors [project.dependencies] in pyproject.toml.
+requests==2.34.2
+pydantic==2.13.4
