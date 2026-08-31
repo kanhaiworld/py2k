@@ -16,6 +16,20 @@ from ._result import ResultList
 from .exceptions import Py2KError
 from .models import Player, PlayerSummary, Team
 
+#: snake_case filter names -> the API's camelCase query params. Anything not
+#: listed here is passed through untouched, which is what the dynamic
+#: attribute filters (`three_ball_gte`) want.
+_PLAYER_PARAM_ALIASES = {
+    "min_rating": "minRating",
+    "max_rating": "maxRating",
+    "badge_tier": "badgeTier",
+    "team_type": "teamType",
+}
+
+
+def _player_params(**filters: Any) -> dict[str, Any]:
+    return clean_params(**{_PLAYER_PARAM_ALIASES.get(k, k): v for k, v in filters.items()})
+
 
 class NBA2KClient:
     """Client for the NBA 2K API.
@@ -78,20 +92,20 @@ class NBA2KClient:
         """List/filter/sort/paginate players. Extra kwargs are passed through
         as-is, e.g. `three_ball_gte=85`, to support the API's 40+ dynamic
         attribute filters."""
-        params = clean_params(
+        params = _player_params(
             era=era,
             position=position,
             team=team,
-            minRating=min_rating,
-            maxRating=max_rating,
+            min_rating=min_rating,
+            max_rating=max_rating,
             badge=badge,
-            badgeTier=badge_tier,
+            badge_tier=badge_tier,
             sort=sort,
             fields=fields,
             limit=limit,
             cursor=cursor,
+            **attribute_filters,
         )
-        params.update(clean_params(**attribute_filters))
         payload = self._http.request("GET", "/players", params=params)
         items = [PlayerSummary.model_validate(p) for p in payload.get("data", [])]
         return ResultList(items, payload.get("meta"))
@@ -108,8 +122,10 @@ class NBA2KClient:
 
     def get_players_bulk(self, **filters: Any) -> ResultList[PlayerSummary]:
         """Fetch the entire matching dataset in one call (one request against
-        your rate limit), per the API's /players/bulk endpoint."""
-        params = clean_params(**filters)
+        your rate limit), per the API's /players/bulk endpoint.
+
+        Accepts the same filter names as `get_players`."""
+        params = _player_params(**filters)
         payload = self._http.request("GET", "/players/bulk", params=params)
         items = [PlayerSummary.model_validate(p) for p in payload.get("data", [])]
         return ResultList(items, payload.get("meta"))

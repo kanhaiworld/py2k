@@ -29,6 +29,6 @@ class ResultList(list[T], Generic[T]):
             import pandas as pd
         except ImportError as exc:
             raise ImportError(
-                "pandas is required for to_dataframe(); install with `pip install py2k[dataframe]`"
+                "pandas is required for to_dataframe(); install with `pip install pynba2k[dataframe]`"
             ) from exc
         return pd.DataFrame([item.model_dump() for item in self])
