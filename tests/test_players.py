@@ -100,8 +100,15 @@ def test_get_players_bulk(client):
         json={"success": True, "data": [{"name": "Player A", "slug": "player-a"}] * 3},
         status=200,
     )
-    players = client.get_players_bulk(era="all")
+    players = client.get_players_bulk(era="all", min_rating=90, three_ball_gte=85)
     assert len(players) == 3
+
+    # snake_case filters map to the API's camelCase params, same as get_players;
+    # dynamic attribute filters pass through untouched.
+    url = responses.calls[0].request.url
+    assert "minRating=90" in url
+    assert "min_rating" not in url
+    assert "three_ball_gte=85" in url
 
 
 @responses.activate

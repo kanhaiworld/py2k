@@ -3,13 +3,24 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "py2k"
+name = "pynba2k"
 version = "0.1.0"
 description = "Unofficial Python client for the NBA 2K API (nba2kapi.com)"
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 authors = [{ name = "Kanhai Wadekar" }]
+keywords = ["nba", "nba2k", "api", "client", "basketball"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
 dependencies = [
     "requests>=2.31",
     "pydantic>=2.0",

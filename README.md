@@ -36,6 +36,13 @@ all_centers = client.get_players_bulk(position="center")
 
 ## Installation
 
+Requires Python 3.10+.
+
+Not yet published to PyPI. Once it is, it'll be `pip install pynba2k` (the
+distribution name is `pynba2k`; you still `import py2k` in code).
+
+For now, install from source:
+
 ```bash
 pip install -e ".[dev]"   # local development
 ```
@@ -68,7 +75,7 @@ The free tier allows 500 requests/hour. The client reads `X-RateLimit-*` respons
 Any result list supports `.to_dataframe()`:
 
 ```bash
-pip install "py2k[dataframe]"
+pip install "pynba2k[dataframe]"
 ```
 
 ```python
